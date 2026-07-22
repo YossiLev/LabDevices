@@ -78,7 +78,15 @@ class YokogawaAQ6370B:
 # ==========================================
 # Example Usage
 # ==========================================
+import sys
+from pathlib import Path
+
 if __name__ == "__main__":
+
+    project_root = Path(__file__).resolve().parent.parent
+    sys.path.append(str(project_root))
+    from Tools.plot_osa import *
+
     # Replace with your actual VISA address:
     # - Ethernet: 'TCPIP0::192.168.1.100::inst0::INSTR'
     # - GPIB:     'GPIB0::1::INSTR'
@@ -99,6 +107,10 @@ if __name__ == "__main__":
         print(f"Acquired {len(wl_nm)} points.")
         print(f"Wavelength range: {wl_nm[0]:.2f} nm to {wl_nm[-1]:.2f} nm")
         print(f"Peak Power: {np.max(power):.2f} dBm at {wl_nm[np.argmax(power)]:.2f} nm")
+
+        plot_and_save_osa_trace(wl_nm, power, trace_name="Trace A", 
+                                #output_image_path="osa_spectrum.png", output_csv_path="osa_trace.csv", 
+                                show_plot=True)
 
     finally:
         osa.close()
